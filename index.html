@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo En Perfumes - Catálogo Completo</title>
+    <style>
+        /* Paleta de colores fiel a ChatGPT Image Jul 3, 2026, 05_00_40 PM.png */
+        :root {
+            --dark-taupe: #76655c;
+            --light-beige: #e5dfd9;
+            --bg-cream: #f4f0eb;
+            --card-bg: #ece6df;
+            --text-dark: #2c2520;
+            --warm-brown: #967f6b;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Banner Superior */
+        .top-bar {
+            background-color: var(--dark-taupe);
+            color: var(--white);
+            text-align: center;
+            padding: 10px 0;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            border-bottom: 1px solid var(--light-beige);
+        }
+
+        .brand-logo {
+            font-size: 28px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--dark-taupe);
+        }
+
+        .brand-logo span {
+            font-style: italic;
+            text-transform: lowercase;
+            color: var(--warm-brown);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-taupe);
+        }
+
+        /* Hero banner inspirado exactamente en la foto */
+        .hero-section {
+            background: linear-gradient(rgba(229, 223, 217, 0.45), rgba(229, 223, 217, 0.3)), url('https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=1600') no-repeat center center/cover;
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 65px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--white);
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .hero-section p {
+            font-style: italic;
+            font-size: 20px;
+            color: var(--text-dark);
+            margin: 15px 0 30px 0;
+            letter-spacing: 1px;
+        }
+
+        .hero-btn {
+            background-color: var(--warm-brown);
+            color: var(--white);
+            padding: 12px 30px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .hero-btn:hover {
+            background-color: var(--dark-taupe);
+        }
+
+        /* Filtros y Buscador */
+        .catalog-header {
+            text-align: center;
+            padding: 50px 20px 20px 20px;
+        }
+
+        .catalog-header h2 {
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--dark-taupe);
+            margin-bottom: 25px;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 8px 24px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--light-beige);
+            color: var(--dark-taupe);
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--warm-brown);
+            color: var(--white);
+            border-color: var(--warm-brown);
+        }
+
+        /* Grid del catálogo */
+        .catalog-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 40px 80px 40px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        /* Tarjeta de Perfume basada en la foto */
+        .perfume-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(229, 223, 217, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .perfume-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .img-wrapper {
+            background-color: var(--white);
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .img-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .sold-out-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #ba3c3c;
+            color: var(--white);
+            font-size: 10px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .perfume-info {
+            padding: 20px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .perfume-name {
+            font-size: 16px;
+            font-weight: normal;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .perfume-section {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #8c7d74;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .perfume-notes {
+            font-size: 11.5px;
+            color: #5c524c;
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            min-height: 48px;
+        }
+
+        .perfume-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            border-top: 1px solid var(--light-beige);
+            padding-top: 15px;
+        }
+
+        .perfume-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--dark-taupe);
+        }
+
+        .perfume-price.none {
+            color: #8c7d74;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .btn-cart {
+            background-color: var(--dark-taupe);
+            border: none;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .btn-cart:hover {
+            background-color: var(--warm-brown);
+        }
+
+        /* Footer de la página */
+        .footer-brand {
+            background-color: var(--card-bg);
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--light-beige);
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: var(--dark-taupe);
+        }
+
+        @media (max-width: 1100px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .products-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">25% OFF EN TODOS LOS PERFUMES ♦ ENVÍOS NACIONALES ♦ CALIDAD GARANTIZADA</div>
+
+    <nav class="navbar">
+        <div class="brand-logo">TODO <span>en perfumes</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#" style="font-weight: bold;">Catálogo</a></li>
+            <li><a href="#">Nosotros</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero-section">
+        <h1>TODO en perfumes</h1>
+        <p>Fragancias que hablan por ti.</p>
+        <a href="#catalog-view" class="hero-btn">Explorar Catálogo</a>
+    </div>
+
+    <div class="catalog-header" id="catalog-view">
+        <h2>CATÁLOGO</h2>
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterCatalog('Todos')">Todos</button>
+            <button class="filter-btn" onclick="filterCatalog('Dama')">Dama</button>
+            <button class="filter-btn" onclick="filterCatalog('Caballero')">Caballero</button>
+            <button class="filter-btn" onclick="filterCatalog('Unisex')">Unisex</button>
+        </div>
+    </div>
+
+    <div class="catalog-container">
+        <div class="products-grid" id="perfume-grid-target">
+            <!-- Los elementos se inyectan automáticamente mediante el script inferior -->
+        </div>
+    </div>
+
+    <div class="footer-brand">
+        © 2026 TODO EN PERFUMES. Todos los derechos reservados. Frascos de alta gama y colecciones exclusivas.
+    </div>
+
+    <script>
+        // Base de Datos íntegra extraída de tu documento 'listado de perfumes2.docx'
+        const perfumeDatabase = [
+            { name: "CH", section: "Dama", price: "210$", img: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=80", notes: "Notas florales refinadas con destellos cítricos y fondo cálido amaderado." },
+            { name: "Gaultier Divine", section: "Dama", price: "320$", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=400&q=80", notes: "Esencia marina audaz entrelazada con merengue dulce y lirios majestuosos." },
+            { name: "Valentino Coral Fantasy", section: "Dama", price: "210$", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=400&q=80", notes: "Colorida combinación frutal de kiwi, jazmín fresco y almizcle." },
+            { name: "Odyssey Acqua", section: "Unisex", price: "90$", img: "https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=400&q=80", notes: "Frescura acuática profunda combinada con pomelo y maderas suaves." },
+            { name: "Dyamante Daddy Yankee", section: "Dama", price: "60$", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=400&q=80", notes: "Acordes frutales exuberantes, sándalo y un toque dulce tropical." },
+            { name: "Flaut", section: "Dama", price: "50$", img: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=400&q=80", notes: "Bouquet floral ligero acentuado con cítricos y fondo de almizcle limpio." },
+            { name: "Odyssey Aoud", section: "Unisex", price: "90$", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=400&q=80", notes: "Oud opulento balanceado con especias orientales y cuero sofisticado." },
+            { name: "Odyssey Artisto", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Hojas verdes aromáticas, bergamota fina y notas de fondo terrosas." },
+            { name: "Odyssey Mega", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Energía cítrica efervescente potenciada con menta fresca y cedro mineral." },
+            { name: "Valentino Yellow Dream", section: "Dama", price: "Agotado", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=400&q=80", notes: "Limón de Italia purificado con pétalos de rosa y almizcle blanco sedoso." },
+            { name: "Valentino The Gold", section: "Dama", price: "380$", img: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=80", notes: "Lujosa vainilla dorada fundida con jazmín grandiflorum y notas solares." },
+            { name: "Viva La Juicy", section: "Dama", price: "120$", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=400&q=80", notes: "Bayas silvestres, mandarina jugosa, madreselva, gardenia y caramelo cremoso." },
+            { name: "La Bomba", section: "Dama", price: "170$", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=400&q=80", notes: "Explosión floral dulce muy intensa con fondo avainillado gourmand." },
+            { name: "Shakira Dream", section: "Dama", price: "60$", img: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=400&q=80", notes: "Esencia juvenil, sutiles notas de rosa, jazmín y maderas tiernas." },
+            { name: "Shakira Dance Midnight", section: "Dama", price: "60$", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=400&q=80", notes: "Notas nocturnas de nardos, cacao dulce y pimienta roja atrevida." },
+            { name: "Armani My Way", section: "Dama", price: "240$", img: "https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=400&q=80", notes: "Un viaje olfativo de flor de azahar, tuberosa radiante y vainilla de Madagascar." },
+            { name: "Perry Ellis 18", section: "Dama", price: "70$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Frutas de agua heladas, orquídea suave y un delicado rastro de sándalo." },
+            { name: "Shakira Dance", section: "Dama", price: "60$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Ritmo fresco de pomelo, bergamota, pera y un corazón tierno de azahar." },
+            { name: "Tommy Caballero", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Clásico americano con lavanda, manzana verde recién cortada y notas de arándano." },
+            { name: "Set Extreme Acqua", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Dúo refrescante con notas de mar abierto, romero aromático y ámbar mineral." },
+            { name: "Set 360", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Set exclusivo con bayas de enebro, fresia fresca y maderas cálidas." },
+            { name: "Red Door", section: "Dama", price: "60$", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=400&q=80", notes: "Elegancia clásica floral de rosas ricas, azahar marroquí, clavel y miel." },
+            { name: "Legend Red", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Naranja de sangre jugosa, cardamomo picante, caoba y madera de cedro." },
+            { name: "Legend Blue", section: "Caballero", price: "130$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Menta refrescante combinada con notas amaderadas refinadas de sándalo y musgo." },
+            { name: "Lady Million", section: "Dama", price: "180$", img: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=80", notes: "Néctar glamoroso de flores blancas, frambuesa ácida, jazmín y miel dulce." },
+            { name: "Jean Paul Gaultier Le Beau", section: "Caballero", price: "340$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Un coco adictivo y sensual fusionado con bergamota fresca y haba tonka." },
+            { name: "Jean Paul Gaultier Le Male", section: "Caballero", price: "270$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Lavanda tradicional de barbería combinada con menta fresca y vainilla acogedora." },
+            { name: "Jean Paul Gaultier Clasique", section: "Caballero", price: "250$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Especias orientales intensas mezcladas con notas de flor de azahar y ámbar." },
+            { name: "Hawa Viper", section: "Caballero", price: "140$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Aroma exótico y punzante con notas de especias raras y cuero ahumado." },
+            { name: "Hawas Tropical", section: "Caballero", price: "110$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Explosión de frutas tropicales maduras sobre un fondo marino y masculino." },
+            { name: "Hawas Pink", section: "Dama", price: "110$", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=400&q=80", notes: "Flores rosadas delicadas con matices frutales dulces y almizcle suave." },
+            { name: "Hawas Eclat", section: "Dama", price: "110$", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=400&q=80", notes: "Brillo de notas verdes, peonías y un sutil fondo amaderado limpio." },
+            { name: "Hawas Black", section: "Caballero", price: "120$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Oscuro y seductor, notas de pimienta negra, pachulí y maderas nobles." },
+            { name: "Hawas Atlantis", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Esencia acuática y marina profunda con acordes minerales de sal y ámbar gris." },
+            { name: "Guess Charm", section: "Dama", price: "60$", img: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=400&q=80", notes: "Fragancia frutal-floral coqueta con manzana fuji, madreselva y maderas claras." },
+            { name: "Good Girl Midnight", section: "Dama", price: "370$", img: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=80", notes: "Opulento nardo nocturno endulzado con almendra, haba tonka y pachulí rico." },
+            { name: "Good Girl Bowtastic", section: "Dama", price: "340$", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=400&q=80", notes: "Edición deslumbrante de jazmín blanco, cacao cremoso y café tostado." },
+            { name: "Chanel N5", section: "Dama", price: "460$", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=400&q=80", notes: "El mito definitivo. Aldehídos centelleantes, rosa de mayo, jazmín y notas atalcadas." },
+            { name: "Coco Chanel", section: "Dama", price: "490$", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=400&q=80", notes: "Barroco y exuberante. Especias de oriente, mandarina, clavo y ámbar profundo." },
+            { name: "Coach Dama", section: "Dama", price: "140$", img: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=400&q=80", notes: "Frambuesa brillante, hojas de hiedra fresca y un corazón de rosa turca sofisticada." },
+            { name: "Born in Roma Coral Fantasy", section: "Caballero", price: "260$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Manzana roja crujiente, tabaco ahumado aromático y esencia pura de salvia." },
+            { name: "Armani Tobacco", section: "Caballero", price: "290$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Hojas de tabaco de alta calidad impregnadas de miel de abejas y especias ricas." },
+            { name: "Armani Parfum", section: "Caballero", price: "270$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Concentración majestuosa de incienso ahumado, bergamota y romero." },
+            { name: "5th Avenue", section: "Dama", price: "50$", img: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=80", notes: "Elegancia urbana clásica neoyorquina con lila, magnolia, tilo y maderas finas." },
+            
+            // Sección Marcas NB y Económicos
+            { name: "Stranger NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Ondas frescas y dinámicas para el día a día con maderas suaves." },
+            { name: "Luxury NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Toque dorado especiado con fondo dulce y cuero sutil." },
+            { name: "Golf Blue NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Aroma deportivo limpio de brisa oceánica y cítricos triturados." },
+            { name: "4 men NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Esencia masculina tradicional basada en lavanda y cedro clásico." },
+            { name: "Blue sky NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Notas ozónicas transparentes con menta fresca y fondo almizclado." },
+            { name: "ZAP NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Impacto especiado juvenil con pimienta y maderas ámbar." },
+            { name: "Extasia NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Aroma intrigante y sensual con notas de cacao y pachulí oscuro." },
+            { name: "Unic NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Equilibrio singular de jengibre fresco y vetiver terroso." },
+            { name: "Golf Red", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Madera roja ardiente, jengibre y un fondo de cuero vigoroso." },
+            { name: "Black Point", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Esencia nocturna cargada de haba tonka y maderas preciosas." },
+            { name: "GT NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Velocidad y frescura con mandarina verde y acordes de asfalto mojado." },
+            { name: "THE N NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Elegancia minimalista con iris pulido y sándalo cremoso." },
+            { name: "Black NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Acordes oscuros ahumados con fondo de ámbar y cuero." },
+            { name: "Ice Box NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Frío glaciar extremo con menta helada y notas de eucalipto." },
+            { name: "Heir PH", section: "Caballero", price: "30$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Estilo fresco y chic con notas de lavanda marina y almizcle suave." },
+            { name: "Diavolo Antonio Banderas", section: "Caballero", price: "50$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Seducción clásica con hojas de violeta, mandarina, canela y cuero." },
+            { name: "Mister Antonio Banderas", section: "Caballero", price: "50$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Elegancia moderna fundamentada en menta picante, cedro y musgo de roble." },
+            { name: "The Royal NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Porte majestuoso con ámbar imperial, especias finas y maderas sagradas." },
+            { name: "Blue Benetton", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Limón eufórico, notas marinas puras y fondo jovial de cedro." },
+            { name: "Black Benetton", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Intensidad urbana nocturna con nuez moscada, lavanda y maderas ricas." },
+            { name: "Commando NB", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Notas verdes silvestres, pino, musgo de bosque y maderas duras." },
+            { name: "Territoire Cobalt", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Frescura metálica azul con bergamota, salvia y cedro cristalino." },
+            { name: "Cold Silver", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Plata helada con toques de jengibre amargo, menta y ámbar blanco." },
+            { name: "Territoire Lux", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Lujo refinado con cardamomo, azafrán preciado y fondo de maderas pulidas." },
+            { name: "Territoire Black", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Fuerza nocturna elegante con haba tonka tostada, cacao negro y cuero." },
+            { name: "Territoire Oud", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Oud suntuoso del desierto matizado con incienso y resinas balsámicas." },
+            { name: "360 Perry Ellis", section: "Caballero", price: "80$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Un icono perenne de bayas de enebro, piña tropical, lavanda y salvia." },
+            { name: "360 Noir", section: "Caballero", price: "80$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Misterio absoluto con tabaco dulce, azafrán e hilos de vainilla negra." },
+            { name: "360 Magnetic Blue", section: "Caballero", price: "80$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Magnetismo acuático con notas de mar azul, bergamota y sándalo sensual." },
+            { name: "Perry Ellis Reserve", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Sofisticación ejecutiva con geranio, lavanda fina, salvia y maderas nobles." },
+            { name: "Perry Ellis Red", section: "Caballero", price: "70$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Energía pasional con pimienta de Sichuan, manzana roja picante y cuero negro." },
+            { name: "Perry Ellis Intense", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Concentración potente de maderas ambarinas enriquecidas con pachulí de Java." },
+            { name: "Perry Ellis Red Sky", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Crepúsculo aromático con acordes ozónicos, bayas rojas maduras y musgo." },
+            { name: "Perry Ellis America", section: "Caballero", price: "40$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Estilo audaz libre con piña, vetiver de Haití y pimienta blanca." },
+            { name: "Perry Ellis Portfolio", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Esencia pulcra ideal para oficinas con pera de Anjou, albahaca y sándalo." },
+            { name: "Guess Amore", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Seducción italiana cálida con canela, ámbar y un sutil corazón floral." },
+            { name: "Guess Night Access", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Pulsaciones nocturnas con pomelo de Florida, geranio y haba tonka dulce." },
+            { name: "Guess 1981 Indigo", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Acorde exclusivo de higo azul, agua de coco refrescante y cedro rústico." },
+            { name: "Guess 1981 Los Angeles", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Calidez de atardecer californiano con pimienta, tabaco rubio y jengibre." },
+            { name: "Guess 1981", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Clásico contemporáneo limpio rico en hojas de violeta, musgo y cedro gris." },
+            { name: "Guess Dare", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Aventura indomable basada en bergamota, pimienta blanca y maderas de cachemira." },
+            { name: "Guess Uomo Aqua", section: "Caballero", price: "70$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Ondas marinas mediterráneas fundidas con salvia purificadora y maderas finas." },
+            { name: "Guess Uomo Intenso", section: "Caballero", price: "70$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Carácter férreo oscuro con ante negro, azafrán oriental y haba tonka." },
+            { name: "Halloween Man", section: "Caballero", price: "100$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Elixir nocturno adictivo con martini de manzana, canela picante y cuero." },
+            { name: "Jean Lowe", section: "Caballero", price: "100$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Inspiración árabe lujosa de oud real, incienso sagrado y ámbar." },
+            { name: "Zara Paris", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Estilo bohemio parisino europeo con menta triturada, ámbar y cedro." },
+            { name: "Zara Dubai", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Opulencia oriental moderna con azafrán, maderas preciosas y notas de dátiles." },
+            { name: "Millionaire", section: "Caballero", price: "60$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Estela opulenta de oro líquido con mandarina sanguina, canela y cuero." },
+            { name: "Tommy Hilfiger", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Esencia americana atemporal con lavanda silvestre, manzana del huerto y madera." },
+            { name: "Paris Hilton For Him", section: "Caballero", price: "70$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Fresco, aireado y magnético con mango maduro, hojas de higo y salvia." },
+            { name: "Burberry Hero", section: "Caballero", price: "160$", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Trilogía de maderas de cedro del Himalaya, Virginia y Atlas con bergamota." },
+            { name: "Burberry Touch", section: "Caballero", price: "85$", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Caricia de violeta limpia, pimienta blanca picante y haba tonka elegante." },
+            { name: "Odyssey Wild One", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Espíritu salvaje e indomable, pimienta de Sichuan, pachulí y ámbar mineral." },
+            { name: "Odyssey Toffee Coffee", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Delicia gourmand con granos de café tostados, caramelo derretido y vainilla negra." },
+            { name: "Odyssey Dubai Chocolate", section: "Caballero", price: "90$", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Exclusivo acorde de chocolate oscuro de oriente, maderas exóticas y pachulí." },
+            { name: "Phantom", section: "Caballero", price: "Consultar", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Fragancia futurista con lavanda eléctrica, limón energizante y vainilla cremosa." },
+            { name: "Invictus Aqua", section: "Caballero", price: "Consultar", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Trofeo de frescura marina absoluta con pomelo rosado, yuzu y maderas ambarinas." },
+            { name: "Asad Lattafa", section: "Caballero", price: "Consultar", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Clon magistral de alta gama con pimienta negra, clavo, café y tabaco de oriente." },
+            { name: "Club de Nuit Intense", section: "Caballero", price: "Consultar", img: "https://images.unsplash.com/photo-1588405748373-122b2321bc31?auto=format&fit=crop&w=400&q=80", notes: "Limón ahumado ultra potente de gran estela, abedul negro y almizcle gris." },
+            { name: "Amber Oud Gold", section: "Caballero", price: "Consultar", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=400&q=80", notes: "Opulencia dorada frutal dulce de melón maduro, piña, ámbar líquido y vainilla." },
+            { name: "Montblanc Explorer", section: "Caballero", price: "Consultar", img: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80", notes: "Aventura elegante con bergamota de Calabria, vetiver de Haití y hojas de pachulí." },
+            { name: "Dior Fahrenheit", section: "Caballero", price: "Consultar", img: "https://images.unsplash.com/photo-1557170334-a7c3d40d04c4?auto=format&fit=crop&w=400&q=80", notes: "Leyenda de la perfumería con notas de cuero refinado, violeta y madera de cedro." },
+            { name: "Stronger With You", section: "Caballero", price: "Consultar", img: "https://images.unsplash.com/photo-1616949821211-1da0183ed3c1?auto=format&fit=crop&w=400&q=80", notes: "Seducción invernal magnética con castaña de Indias ahumada, cardamomo y vainilla." }
+        ];
+
+        // Función para renderizar el catálogo completo en la cuadrícula
+        function renderCatalog(items) {
+            const grid = document.getElementById("perfume-grid-target");
+            grid.innerHTML = "";
+
+            items.forEach(perfume => {
+                const isAgotado = perfume.price.toLowerCase() === "agotado";
+                const isConsultar = perfume.price === "0" || perfume.price === "00" || perfume.price === "000" || perfume.price === "0000" || perfume.price === "Consultar";
+                
+                let displayPrice = perfume.price;
+                if (isConsultar) displayPrice = "Consultar Precio";
+
+                const cardHtml = `
+                    <div class="perfume-card" style="${isAgotado ? 'opacity: 0.75;' : ''}">
+                        <div class="img-wrapper">
+                            ${isAgotado ? '<span class="sold-out-badge">Agotado</span>' : ''}
+                            <img src="${perfume.img}" alt="${perfume.name}">
+                        </div>
+                        <div class="perfume-info">
+                            <span class="perfume-section">${perfume.section}</span>
+                            <h3 class="perfume-name">${perfume.name}</h3>
+                            <p class="perfume-notes">${perfume.notes}</p>
+                            <div class="perfume-footer">
+                                <span class="perfume-price ${isAgotado ? 'none' : ''}">${displayPrice}</span>
+                                ${!isAgotado ? `<button class="btn-cart" title="Añadir al pedido">🛒</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        // Función para filtrar por sección (Dama, Caballero, Unisex)
+        function filterCatalog(category) {
+            // Cambiar estado activo del botón
+            const buttons = document.querySelectorAll(".filter-btn");
+            buttons.forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
+
+            if (category === "Todos") {
+                renderCatalog(perfumeDatabase);
+            } else {
+                const filtered = perfumeDatabase.filter(p => p.section.toLowerCase() === category.toLowerCase());
+                renderCatalog(filtered);
+            }
+        }
+
+        // Carga inicial de todo el catálogo
+        window.onload = () => {
+            renderCatalog(perfumeDatabase);
+        };
+    </script>
+</body>
+</html>
